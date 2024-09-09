@@ -1,0 +1,2 @@
+# datascience_bedrock_chatbot
+データサイエンス生成AIチャットボット

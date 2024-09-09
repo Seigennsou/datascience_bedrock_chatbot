@@ -1,0 +1,132 @@
+[
+  
+  {
+    "toolSpec": {
+      "name": "get_snowflake_tables",
+      "description": "Get all schema.table names from Snowflake.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "input_text": {
+              "type": "string",
+              "description": "Get all schema.table names from Snowflake. "
+            }
+          },
+          "required": ["input_text"]
+        }
+      }
+    }
+  },
+
+  {
+    "toolSpec": {
+      "name": "get_snowflake_tables_columns",
+      "description": "input schema and table name, get all column names from Snowflake. ",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "schema_name": {
+              "type": "string",
+              "description": "input schema name"
+            },
+            "table_name": {
+              "type": "string",
+              "description": "input table name"
+            }
+          },
+          "required": ["schema_name", "table_name"]
+        }
+      }
+    }
+  },
+
+  {
+    "toolSpec": {
+        "name": "get_dataframe_info",
+        "description": "Retrieve the list of all DataFrames stored in the current session's df_dict and return the list in a DataFrame format.",
+        "inputSchema": {
+            "json": {
+                "type": "object",
+                "properties": {
+                    "input_text": {
+                        "type": "string",
+                        "description": "A descriptive message that provides context or purpose for retrieving the DataFrame list."
+                    }
+                },
+                "required": ["input_text"]
+            }
+        }
+    }
+},
+
+  
+  {
+    "toolSpec": {
+      "name": "get_snowflake_query_result",
+      "description": "input SQL query, get query result from Snowflake.. rule: /n won't be escaped in the input SQL query.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "sql_text": {
+              "type": "string",
+              "description": "input SQL query For example: SELECT f.*, e.year, e.rank, e.a, e.b, e.c FROM PUBLIC.table1 as f left JOIN PUBLIC.table2 as e ON f.CIF = e.CIF AND TO_CHAR(DATEADD(YEAR, -1, TO_DATE(f.dates, 'YYYYMMDD')), 'YYYY') = TO_CHAR(e.year, 'YYYY') ORDER BY f.CIF, f.dates;"
+            },
+            "df_name": {
+                "type": "string",
+                "description": "name of the dataframe to store the query result,use japanase characters only,do not be same as any existing dataframe name."
+            }
+          },
+          "required": ["sql_text","df_name"]
+        }
+      }
+    }
+  },
+
+  {
+    "toolSpec": {
+        "name": "get_dataframe_columns_info",
+        "description": "Retrieve column names and data types for a specified DataFrame from the current session's df_dict.",
+        "inputSchema": {
+            "json": {
+                "type": "object",
+                "properties": {
+                    "df_name": {
+                        "type": "string",
+                        "description": "The name of the DataFrame for which to retrieve column information."
+                    }
+                },
+                "required": ["df_name"]
+            }
+        }
+    }
+},
+
+
+  {
+    "toolSpec": {
+      "name": "execute_python_code",
+      "description": "This tool allows you to input a Python code string and df_name, which will be dynamically executed within the global environment. The code should create and return a DataFrame named 'result_df'. This tool is useful when you need to apply custom data transformations or calculations on existing DataFrames in your environment. \n\n**Execution Principle**: The provided code is executed using Python's built-in 'exec' function within the global environment. This allows the code to access and manipulate any DataFrame or variable available globally. The code should generate a DataFrame named 'result_df', which will be captured and returned by the tool. If 'result_df' is not created, or if there is an error during execution, the tool will return an error message. \n\n**Input Details**: The input should be a valid Python code string. This code can reference any DataFrame already loaded in the global environment. The code must define a DataFrame named 'result_df', which will be returned as the result. Make sure that 'result_df' is a valid pandas DataFrame. \n\n**Output Details**: If the code executes successfully, the tool will return the 'result_df' DataFrame. If there is an error, the tool will return an error message. The response text will include either a confirmation of successful execution or the error details. \n\n**Example Input**: { 'func_code': 'result_df = df1.merge(df2, on=\"key_column\")' }",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "func_code": {
+              "type": "string",
+              "description": "The Python code to be executed. The code should utilize existing DataFrames within the global environment and produce a DataFrame named 'result_df'. This 'result_df' will be returned as the output. For example: 'result_df = df1.merge(df2, on=\"key\")'."
+            },
+            "df_name": {
+              "type": "string",
+              "description": "name of the dataframe to store the result_df,use japanase characters only,do not be same as any existing dataframe name."
+            }
+          },
+          "required": ["func_code","df_name"]
+        }
+      }
+    }
+  }
+  
+  
+]
