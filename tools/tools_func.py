@@ -15,7 +15,7 @@ def create_pg_connection_engine_con_cur(user, password, host, port, database):
 
 class ToolsList:
     def __init__(self):
-        self.engine, self.con, self.cur = create_pg_connection_engine_con_cur(user='user', password='585828', host='localhost', port='5432', database='BANK_DATA')
+        self.engine, self.con, self.cur = create_pg_connection_engine_con_cur(user='', password='', host='localhost', port='5432', database='BANK_DATA')
     
     def get_snowflake_tables(self,input_text):
         sql_query = """
